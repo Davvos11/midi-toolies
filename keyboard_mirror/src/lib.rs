@@ -5,23 +5,14 @@ struct KeyboardMirror {
     params: Arc<KeyboardMirrorParams>,
 }
 
-#[derive(Params)]
-struct KeyboardMirrorParams {
-    // #[id = "gain"]
-    // pub gain: FloatParam,
-}
+#[derive(Params, Default)]
+struct KeyboardMirrorParams {}
 
 impl Default for KeyboardMirror {
     fn default() -> Self {
         Self {
             params: Arc::new(KeyboardMirrorParams::default()),
         }
-    }
-}
-
-impl Default for KeyboardMirrorParams {
-    fn default() -> Self {
-        Self {}
     }
 }
 
@@ -112,8 +103,7 @@ impl Vst3Plugin for KeyboardMirror {
 
 fn mirror_note(note: u8) -> u8 {
     let distance = note as i8 - MIRROR;
-    let mirrored = (MIRROR - distance) as u8;
-    mirrored
+    (MIRROR - distance) as u8
 }
 
 nih_export_clap!(KeyboardMirror);
