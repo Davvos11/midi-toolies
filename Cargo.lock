@@ -355,7 +355,7 @@ dependencies = [
 [[package]]
 name = "nih_plug"
 version = "0.0.0"
-source = "git+https://github.com/robbert-vdh/nih-plug.git#400eb3156f221073fbcaf95607b56842272d134b"
+source = "git+https://github.com/robbert-vdh/nih-plug.git?rev=400eb3156f221073fbcaf95607b56842272d134b#400eb3156f221073fbcaf95607b56842272d134b"
 dependencies = [
  "anyhow",
  "anymap3",
@@ -386,7 +386,7 @@ dependencies = [
 [[package]]
 name = "nih_plug_derive"
 version = "0.1.0"
-source = "git+https://github.com/robbert-vdh/nih-plug.git#400eb3156f221073fbcaf95607b56842272d134b"
+source = "git+https://github.com/robbert-vdh/nih-plug.git?rev=400eb3156f221073fbcaf95607b56842272d134b#400eb3156f221073fbcaf95607b56842272d134b"
 dependencies = [
  "proc-macro2",
  "quote",
