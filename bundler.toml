@@ -6,3 +6,6 @@
 
 [keyboard_mirror]
 name = "Keyboard Mirror"
+
+[fake_sustain]
+name = "Fake Sustain"
