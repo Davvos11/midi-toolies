@@ -115,7 +115,7 @@ jobs:
       - name: Archive plugin files
         if: startsWith(matrix.os, 'windows')
         shell: powershell
-        run: Compress-Archive -Path "$env:ENV_SERVER"/* -Destination "$env:ARCHIVE_NAME".${{ matrix.archive }}
+        run: Compress-Archive -Path "$env:ARCHIVE_NAME"/* -Destination "$env:ARCHIVE_NAME".${{ matrix.archive }}
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
