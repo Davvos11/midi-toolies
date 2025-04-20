@@ -95,12 +95,6 @@ jobs:
       - name: Determine build archive name
         run: |
           echo "ARCHIVE_NAME=midi-toolies-$GITHUB_REF_NAME-${{ matrix.name }}" >> "$GITHUB_ENV"
-          runner_name=${{ matrix.name }}
-          if [[ $runner_name = 'ubuntu-22.04' ]]; then
-            echo "ARCHIVE_TYPE=.tar.gz" >> "$GITHUB_ENV"
-          else
-            echo "ARCHIVE_TYPE=.zip" >> "$GITHUB_ENV"
-          fi
       - name: Move all packaged plugin into a directory
         run: |
           # GitHub Action strips the top level directory, great, have another one
@@ -115,7 +109,7 @@ jobs:
       - name: Archive plugin files
         if: startsWith(matrix.os, 'windows')
         shell: powershell
-        run: Compress-Archive -Path "$env:ARCHIVE_NAME"/* -Destination "$env:ARCHIVE_NAME".${{ matrix.archive }}
+        run: Compress-Archive -Path "$env:ARCHIVE_NAME/*" -Destination "$env:ARCHIVE_NAME.${{ matrix.archive }}"
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
