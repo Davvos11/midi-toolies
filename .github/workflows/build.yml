@@ -97,13 +97,13 @@ jobs:
       - name: Move all packaged plugin into a directory
         run: |
           # GitHub Action strips the top level directory, great, have another one
-          mkdir -p "$ARCHIVE_NAME"
-          mv target/bundled/* "$ARCHIVE_NAME"
+          mkdir -p "$ARCHIVE_NAME/$ARCHIVE_NAME"
+          mv target/bundled/* "$ARCHIVE_NAME/$ARCHIVE_NAME"
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.ARCHIVE_NAME }}.tar.gz
-          asset_name: ${{ env.ARCHIVE_NAME }}.tar.gz
+          file: ${{ env.ARCHIVE_NAME }}
+          asset_name: ${{ env.ARCHIVE_NAME }}
           tag: ${{ github.ref }}
           overwrite: true
