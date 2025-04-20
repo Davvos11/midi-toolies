@@ -27,9 +27,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - { name: ubuntu-22.04,    os: ubuntu-22.04,   cross-target: '' }
-          - { name: macos-universal, os: macos-latest,   cross-target: x86_64-apple-darwin }
-          - { name: windows,         os: windows-latest, cross-target: '' }
+          - { name: ubuntu-22.04,    os: ubuntu-22.04,   archive: tar.gz, cross-target: '' }
+          - { name: macos-universal, os: macos-latest,   archive: zip,    cross-target: x86_64-apple-darwin }
+          - { name: windows,         os: windows-latest, archive: zip,    cross-target: '' }
     name: Package plugin binaries
     runs-on: ${{ matrix.os }}
     steps:
@@ -106,17 +106,21 @@ jobs:
           # GitHub Action strips the top level directory, great, have another one
           mkdir -p "$ARCHIVE_NAME/$ARCHIVE_NAME"
           mv target/bundled/* "$ARCHIVE_NAME/$ARCHIVE_NAME"
-          runner_name=${{ matrix.name }}
-          if [[ $runner_name = 'ubuntu-22.04' ]]; then
-            tar czf "$ARCHIVE_NAME"$ARCHIVE_TYPE --directory="$ARCHIVE_NAME" .
-          else
-            zip -r "$ARCHIVE_NAME"$ARCHIVE_TYPE "$ARCHIVE_NAME"
-          fi
+      - name: Archive plugin files
+        if: startsWith(matrix.os, 'ubuntu')
+        run: tar czf "$ARCHIVE_NAME"${{ matrix.archive }} --directory="$ARCHIVE_NAME" .
+      - name: Archive plugin files
+        if: startsWith(matrix.os, 'macos')
+        run: zip -r "$ARCHIVE_NAME"${{ matrix.archive }} "$ARCHIVE_NAME"
+      - name: Archive plugin files
+        if: startsWith(matrix.os, 'windows')
+        shell: powershell
+        run: Compress-Archive -Path folder/* -Destination new.zip
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.ARCHIVE_NAME }}${{ env.ARCHIVE_TYPE }}
-          asset_name: ${{ env.ARCHIVE_NAME }}${{ env.ARCHIVE_TYPE }}
+          file: ${{ env.ARCHIVE_NAME }}${{ matrix.archive }}
+          asset_name: ${{ env.ARCHIVE_NAME }}${{ matrix.archive }}
           tag: ${{ github.ref }}
           overwrite: true
