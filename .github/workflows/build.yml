@@ -99,6 +99,7 @@ jobs:
           # GitHub Action strips the top level directory, great, have another one
           mkdir -p "$ARCHIVE_NAME/$ARCHIVE_NAME"
           mv target/bundled/* "$ARCHIVE_NAME/$ARCHIVE_NAME"
+          tree
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
