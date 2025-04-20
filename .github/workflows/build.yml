@@ -94,6 +94,7 @@ jobs:
       - name: Determine build archive name
         run: |
           echo "ARCHIVE_NAME=midi-toolies-$GITHUB_REF_NAME-${{ matrix.name }}" >> "$GITHUB_ENV"
+          runner_name=${{ matrix.name }}
           if [[ $runner_name = 'ubuntu-22.04' ]]; then
             echo "ARCHIVE_TYPE=.tar.gz" >> "$GITHUB_ENV"
           else
@@ -110,7 +111,7 @@ jobs:
           else
             zip -r "$ARCHIVE_NAME"$ARCHIVE_TYPE "$ARCHIVE_NAME"
           fi
-          tree
+          ls -al
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
