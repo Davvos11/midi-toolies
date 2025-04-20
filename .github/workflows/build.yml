@@ -93,12 +93,12 @@ jobs:
 
       - name: Determine build archive name
         run: |
-          echo "ARCHIVE_NAME=midi-toolies-$(cargo pkgid | cut -d "#" -f2)-${{ matrix.name }}" >> "$GITHUB_ENV"
+          echo "ARCHIVE_NAME=midi-toolies-$GITHUB_REF_NAME-${{ matrix.name }}" >> "$GITHUB_ENV"
       - name: Move all packaged plugin into a directory
         run: |
           # GitHub Action strips the top level directory, great, have another one
-          mkdir -p "$ARCHIVE_NAME/$ARCHIVE_NAME"
-          mv target/bundled/* "$ARCHIVE_NAME/$ARCHIVE_NAME"
+          mkdir -p "$ARCHIVE_NAME"
+          mv target/bundled/* "$ARCHIVE_NAME"
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
