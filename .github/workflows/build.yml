@@ -120,7 +120,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.ARCHIVE_NAME }}${{ matrix.archive }}
-          asset_name: ${{ env.ARCHIVE_NAME }}${{ matrix.archive }}
+          file: ${{ env.ARCHIVE_NAME }}.${{ matrix.archive }}
+          asset_name: ${{ env.ARCHIVE_NAME }}.${{ matrix.archive }}
           tag: ${{ github.ref }}
           overwrite: true
