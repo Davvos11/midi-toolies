@@ -94,17 +94,28 @@ jobs:
       - name: Determine build archive name
         run: |
           echo "ARCHIVE_NAME=midi-toolies-$GITHUB_REF_NAME-${{ matrix.name }}" >> "$GITHUB_ENV"
+          if [[ $runner_name = 'ubuntu-22.04' ]]; then
+            echo "ARCHIVE_TYPE=.tar.gz" >> "$GITHUB_ENV"
+          else
+            echo "ARCHIVE_TYPE=.zip" >> "$GITHUB_ENV"
+          fi
       - name: Move all packaged plugin into a directory
         run: |
           # GitHub Action strips the top level directory, great, have another one
           mkdir -p "$ARCHIVE_NAME/$ARCHIVE_NAME"
           mv target/bundled/* "$ARCHIVE_NAME/$ARCHIVE_NAME"
+          runner_name=${{ matrix.name }}
+          if [[ $runner_name = 'ubuntu-22.04' ]]; then
+            tar czf "$ARCHIVE_NAME"$ARCHIVE_TYPE --directory="$ARCHIVE_NAME" .
+          else
+            zip -r "$ARCHIVE_NAME"$ARCHIVE_TYPE "$ARCHIVE_NAME"
+          fi
           tree
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.ARCHIVE_NAME }}
-          asset_name: ${{ env.ARCHIVE_NAME }}
+          asset_name: ${{ env.ARCHIVE_NAME }}${{ env.ARCHIVE_TYPE }}
           tag: ${{ github.ref }}
           overwrite: true
