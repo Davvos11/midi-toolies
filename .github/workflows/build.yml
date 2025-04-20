@@ -104,3 +104,11 @@ jobs:
         with:
           name: ${{ env.ARCHIVE_NAME }}
           path: ${{ env.ARCHIVE_NAME }}
+      - name: Upload archives to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ env.ARCHIVE_NAME }}.tar.gz
+          asset_name: ${{ env.ARCHIVE_NAME }}.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
