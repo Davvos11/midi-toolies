@@ -112,7 +112,6 @@ jobs:
           else
             zip -r "$ARCHIVE_NAME"$ARCHIVE_TYPE "$ARCHIVE_NAME"
           fi
-          ls -al
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
