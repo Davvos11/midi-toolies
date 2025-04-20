@@ -111,12 +111,12 @@ jobs:
           else
             zip -r "$ARCHIVE_NAME"$ARCHIVE_TYPE "$ARCHIVE_NAME"
           fi
-          ls -al
+          tree
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.ARCHIVE_NAME }}
+          file: ${{ env.ARCHIVE_NAME }}${{ env.ARCHIVE_TYPE }}
           asset_name: ${{ env.ARCHIVE_NAME }}${{ env.ARCHIVE_TYPE }}
           tag: ${{ github.ref }}
           overwrite: true
