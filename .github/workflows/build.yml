@@ -93,17 +93,12 @@ jobs:
 
       - name: Determine build archive name
         run: |
-          # Windows (usually) doesn't like colons in file names
-          echo "ARCHIVE_NAME=nih-plugs-$(date -u +"%Y-%m-%d-%H%m%S")-${{ matrix.name }}" >> "$GITHUB_ENV"
+          echo "ARCHIVE_NAME=midi-toolies-$(cargo pkgid | cut -d "#" -f2)-${{ matrix.name }}" >> "$GITHUB_ENV"
       - name: Move all packaged plugin into a directory
         run: |
           # GitHub Action strips the top level directory, great, have another one
           mkdir -p "$ARCHIVE_NAME/$ARCHIVE_NAME"
           mv target/bundled/* "$ARCHIVE_NAME/$ARCHIVE_NAME"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.ARCHIVE_NAME }}
-          path: ${{ env.ARCHIVE_NAME }}
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
