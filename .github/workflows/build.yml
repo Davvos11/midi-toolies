@@ -108,14 +108,14 @@ jobs:
           mv target/bundled/* "$ARCHIVE_NAME/$ARCHIVE_NAME"
       - name: Archive plugin files
         if: startsWith(matrix.os, 'ubuntu')
-        run: tar czf "$ARCHIVE_NAME"${{ matrix.archive }} --directory="$ARCHIVE_NAME" .
+        run: tar czf "$ARCHIVE_NAME".${{ matrix.archive }} --directory="$ARCHIVE_NAME" .
       - name: Archive plugin files
         if: startsWith(matrix.os, 'macos')
-        run: zip -r "$ARCHIVE_NAME"${{ matrix.archive }} "$ARCHIVE_NAME"
+        run: zip -r "$ARCHIVE_NAME".${{ matrix.archive }} "$ARCHIVE_NAME"
       - name: Archive plugin files
         if: startsWith(matrix.os, 'windows')
         shell: powershell
-        run: Compress-Archive -Path folder/* -Destination new.zip
+        run: Compress-Archive -Path "$env:ENV_SERVER"/* -Destination "$env:ENV_SERVER".${{ matrix.archive }}
       - name: Upload archives to release
         uses: svenstaro/upload-release-action@v2
         with:
