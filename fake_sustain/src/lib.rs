@@ -96,6 +96,14 @@ impl Plugin for FakeSustain {
                         send_event = false;
                     }
                 }
+                NoteEvent::NoteOn { note, .. } => {
+                    // When a note is played a second time, it should not
+                    // stop when the pedal is released.
+                    // (This should only happen after the next note off + pedal release)
+                    if self.sustain_held {
+                        self.notes.remove(&note);
+                    }
+                }
                 NoteEvent::MidiCC { cc, value, .. } => {
                     if cc == self.params.cc.value() as u8 {
                         // Send gathered note off events when pedal is released
